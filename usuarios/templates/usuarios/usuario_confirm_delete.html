@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmar Exclusão</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        padding: 20px;
+      }
+      .messages {
+        list-style: none;
+        padding: 0;
+      }
+      .message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+          {{ message }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <div
+        style="
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #f8f8f8;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        "
+      >
+        <h1 style="color: #ba2121; font-weight: 300">Confirmar Exclusão</h1>
+        <p style="margin-bottom: 20px">
+          Você tem certeza que deseja excluir o usuário "{{ object.nome }}"?
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <button
+            type="submit"
+            style="
+              padding: 10px 15px;
+              background-color: #ba2121;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+            "
+          >
+            Sim, excluir
+          </button>
+          <a
+            href="{% url 'usuario_list' %}"
+            style="
+              padding: 10px 15px;
+              background-color: #79aec8;
+              color: white;
+              text-decoration: none;
+              border-radius: 4px;
+              margin-left: 10px;
+            "
+            >Cancelar</a
+          >
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

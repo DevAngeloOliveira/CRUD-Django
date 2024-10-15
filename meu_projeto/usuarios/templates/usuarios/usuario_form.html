@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Confirmar Exclusão</title>
+    <!-- Título dinâmico baseado se é uma edição ou criação -->
+    <title>
+      {% if form.instance.pk %}Editar{% else %}Novo{% endif %} Usuário
+    </title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -35,10 +38,25 @@
         background-color: #f8d7da;
         color: #721c24;
       }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <!-- Exibe mensagens de feedback (sucesso, erro, etc.) -->
       {% if messages %}
       <ul class="messages">
         {% for message in messages %}
@@ -58,24 +76,36 @@
           border-radius: 4px;
         "
       >
-        <h1 style="color: #ba2121; font-weight: 300">Confirmar Exclusão</h1>
-        <p style="margin-bottom: 20px">
-          Você tem certeza que deseja excluir o usuário "{{ object.nome }}"?
-        </p>
+        <!-- Título dinâmico baseado se é uma edição ou criação -->
+        <h1 style="color: #417690; font-weight: 300">
+          {% if form.instance.pk %}Editar{% else %}Novo{% endif %} Usuário
+        </h1>
+
+        <!-- Formulário para criar/editar usuário -->
         <form method="post">
-          {% csrf_token %}
+          {% csrf_token %} {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }} {{ field }} {% if field.errors %}
+            <div style="color: #ba2121; margin-top: 5px">
+              {{ field.errors }}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <!-- Botões de ação -->
           <button
             type="submit"
             style="
               padding: 10px 15px;
-              background-color: #ba2121;
+              background-color: #417690;
               color: white;
               border: none;
               border-radius: 4px;
               cursor: pointer;
             "
           >
-            Sim, excluir
+            Salvar
           </button>
           <a
             href="{% url 'usuario_list' %}"
